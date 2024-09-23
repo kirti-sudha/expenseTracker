@@ -8,9 +8,7 @@ from google.oauth2.service_account import Credentials
 import os
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# Path to your service account key JSON file
-service_account_file = os.path.join(current_dir, 'credentials.json')
+credentials_info = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
 
 # Define the scope for the Google Sheets and Google Drive API
 scope = [
@@ -20,7 +18,7 @@ scope = [
 ]
 
 # Authenticate using the service account file
-credentials = Credentials.from_service_account_file("credentials.json", scopes=scope)
+credentials = Credentials.from_service_account_info(credentials_info, scopes=scope)
 
 # Connect to Google Sheets
 client = gspread.authorize(credentials)
@@ -29,7 +27,6 @@ client = gspread.authorize(credentials)
 sheet = client.open_by_key("1Mc8IYS05ktJZWuSas8fagHY1_f7NLj6vzscdRZrT6Pg").sheet1
 if "expense_tracker" not in st.session_state:
     st.session_state.expense_tracker = GroupExpenseTracker(sheet)
-
 
 
 # Streamlit configuration

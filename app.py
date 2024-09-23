@@ -8,7 +8,9 @@ from google.oauth2.service_account import Credentials
 import os
 
 
-credentials_info = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Path to your service account key JSON file
+service_account_file = os.path.join(current_dir, 'credentials.json')
 
 # Define the scope for the Google Sheets and Google Drive API
 scope = [
@@ -18,7 +20,7 @@ scope = [
 ]
 
 # Authenticate using the service account file
-credentials = Credentials.from_service_account_info(credentials_info, scopes=scope)
+credentials = Credentials.from_service_account_file("credentials.json", scopes=scope)
 
 # Connect to Google Sheets
 client = gspread.authorize(credentials)
